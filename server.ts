@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import alertRoutes from "./routes/alert.ts";
-
+import getAlertsRoutes from "./routes/getAlerts.ts";
 
 dotenv.config();
 
@@ -13,6 +13,7 @@ const mongoUri = Deno.env.get("MONGO_URI") || "";
 //app.use(cookieParser());
 app.use(express.json());
 app.use("/alert", alertRoutes);
+app.use("/", getAlertsRoutes);
 
 
 mongoose.connect(mongoUri)
