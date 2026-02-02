@@ -1,0 +1,5 @@
+.env
+node_modules/
+doc.json
+routes/deletePod.ts
+routes/quarantinePod.ts

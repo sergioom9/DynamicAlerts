@@ -1,0 +1,11 @@
+# test-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: falco-test-pod
+  namespace: default
+spec:
+  containers:
+  - name: alpine
+    image: alpine:latest
+    command: ["sleep", "3600"]
