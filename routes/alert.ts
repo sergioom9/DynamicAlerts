@@ -15,6 +15,9 @@ router.post("/", async (req: Request, res: Response) => {
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
+        if(req.body.output.includes('cilium')){
+            return res.status(400).json({ error: "Cilium alert" });
+        }   
         const alert = new Alert({
             output: req.body.output,
             priority: req.body.priority ,
