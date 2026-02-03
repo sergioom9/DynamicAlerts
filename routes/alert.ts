@@ -6,8 +6,6 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
-        console.log(req.body.output_fields["container.id"])
         if (
             req.body.output == null ||
             req.body.priority == null ||
@@ -22,6 +20,7 @@ router.post("/", async (req: Request, res: Response) => {
             priority: req.body.priority ,
             rule: req.body.rule ,
             time: req.body.time ,
+            containerid: req.body.output_fields["container.id"]
         });
         await alert.save();
         if(!alert){
