@@ -15,15 +15,19 @@ router.post("/", async (req: Request, res: Response) => {
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
-        if(req.body.output.includes('cilium')){
+        if(req.body.output.includes('cilium') || req.body.output.includes('container_name=<NA>')){
             return res.status(400).json({ error: "Cilium alert" });
-        }   
+        }
         const alert = new Alert({
             output: req.body.output,
             priority: req.body.priority ,
             rule: req.body.rule ,
             time: req.body.time ,
-            containerid: req.body.output_fields["container.id"]
+            containerid: req.body.output_fields["container.id"],
+            containername : req.body.output_fields["container.name"],
+            podname:req.body.output_fields["k8s.pod.name"],
+            username:req.body.output_fields["user.name"],
+            useruid:req.body.output_fields["cuser.uid"],
         });
         await alert.save();
         if(!alert){
