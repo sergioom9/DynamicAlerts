@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
         if (
             req.body.output == null ||
             req.body.priority == null ||
             req.body.rule == null ||
-            req.body.time == null 
+            req.body.time == null ||
+            req.body.output_fields["container.id"] == null 
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
