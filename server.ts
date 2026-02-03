@@ -3,17 +3,19 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import alertRoutes from "./routes/alert.ts";
 import getAlertsRoutes from "./routes/getAlerts.ts";
-
+import deletePodRoute from "./routes/deletePod.ts"
+import quarantinePodRoute from "./routes/quarantinePod.ts"
 dotenv.config();
 
 const app = express();
 const port = 3000;
 const mongoUri = Deno.env.get("MONGO_URI") || "";
 
-//app.use(cookieParser());
 app.use(express.json());
 app.use("/alert", alertRoutes);
 app.use("/", getAlertsRoutes);
+app.use("/delete", deletePodRoute);
+app.use("/quarantine", quarantinePodRoute);
 
 
 mongoose.connect(mongoUri)

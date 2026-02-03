@@ -10,11 +10,7 @@ router.post("/", async (req: Request, res: Response) => {
             req.body.output == null ||
             req.body.priority == null ||
             req.body.rule == null ||
-            req.body.time == null ||
-            req.body.source == null ||
-            req.body.output_fields == null ||
-            req.body.output_fields.process_name == null ||
-            req.body.output_fields.container_id == null
+            req.body.time == null 
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
@@ -23,9 +19,6 @@ router.post("/", async (req: Request, res: Response) => {
             priority: req.body.priority ,
             rule: req.body.rule ,
             time: req.body.time ,
-            source: req.body.source || "null",
-            tags: req.body.tags ,
-            output_fields: req.body.output_fields || []
         });
         await alert.save();
         if(!alert){
