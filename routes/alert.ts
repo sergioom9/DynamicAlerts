@@ -17,7 +17,9 @@ router.post("/", async (req: Request, res: Response) => {
         }
         if(req.body.output.includes('cilium') || req.body.output.includes('container_name=<NA>') 
             || req.body.output_fields["container.id"] ==="host"
-            || req.body.output_fields["container.id"].includes('proxy')
+            || req.body.output_fields["container.id"].includes('proxy') 
+            || req.body.output_fields["container.name"].includes('kube-proxy')
+            || req.body.output_fields["container.name"].includes('pause')
         ){
             return res.status(400).json({ error: "Cilium alert" });
         }
