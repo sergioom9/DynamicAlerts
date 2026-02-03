@@ -15,13 +15,16 @@ router.post("/", async (req: Request, res: Response) => {
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
-        if(req.body.output.includes('cilium') || req.body.output.includes('container_name=<NA>') 
-            || req.body.output_fields["container.id"] ==="host"
-            || req.body.output_fields["container.id"].includes('proxy') 
-            || req.body.output_fields["container.name"].includes('kube-proxy')
-            || req.body.output_fields["container.name"].includes('pause')
-        ){
-            return res.status(400).json({ error: "Cilium alert" });
+        if (
+            req.body.output.includes('cilium') ||                
+            req.body.output_fields["container.id"] === "host" ||                      
+            req.body.output_fields["container.name"].includes('kube-proxy') ||           
+            req.body.output_fields["container.name"].includes('pause') ||                 
+            req.body.output_fields["k8s_ns_name"] === "kube-system" ||                 
+            req.body.output_fields["k8s_ns_name"] === "kube-public" ||                     
+            req.body.output_fields["k8s_ns_name"] === "kube-node-lease"                      
+        ) {
+            return res.status(400).json({ error: "Alerta no deseada" });
         }
         const alert = new Alert({
             output: req.body.output,
@@ -31,6 +34,7 @@ router.post("/", async (req: Request, res: Response) => {
             containerid: req.body.output_fields["container.id"],
             containername : req.body.output_fields["container.name"],
             podname:req.body.output_fields["k8s.pod.name"],
+            namespace:req.body.output_fields["k8s.ns.name"],
             username:req.body.output_fields["user.name"],
             useruid:req.body.output_fields["cuser.uid"],
         });

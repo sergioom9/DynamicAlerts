@@ -3,6 +3,7 @@ export type FalcoAlert = {
   containerid : string,
   containername: string,
   podname: string,
+  namespace: string,
   username: string,
   useruid: string,
   priority: string,
