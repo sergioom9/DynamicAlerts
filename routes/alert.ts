@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const data = req.body
+        console.log(req.body)
         if (
             req.body.output == null ||
             req.body.priority == null ||
@@ -25,7 +25,7 @@ router.post("/", async (req: Request, res: Response) => {
         if(!alert){
             return res.status(409).json({ error: "Alert not saved" });
         }
-        return res.status(200).json({ success:true,data });
+        return res.status(200).json({ success:true,alert });
         } catch (err: Error | any) {
         console.log(err)
         res.status(500).json({ error: "Internal Server Error" });
