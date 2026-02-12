@@ -1,4 +1,4 @@
-import { KubeConfig, CoreV1Api, NetworkingV1Api } from "npm:@kubernetes/client-node";
+import { KubeConfig, CoreV1Api, NetworkingV1Api } from "@kubernetes/client-node";
 import express, { Request, Response } from "express";
 
 const router = express.Router();

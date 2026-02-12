@@ -5,6 +5,7 @@ import alertRoutes from "./routes/alert.ts";
 import getAlertsRoutes from "./routes/getAlerts.ts";
 import deletePodRoute from "./routes/deletePod.ts"
 import quarantinePodRoute from "./routes/quarantinePod.ts"
+import getIncidentsRoute from "./routes/getIncidents.ts"
 dotenv.config();
 
 const app = express();
@@ -13,10 +14,10 @@ const mongoUri = Deno.env.get("MONGO_URI") || "";
 
 app.use(express.json());
 app.use("/alert", alertRoutes);
-app.use("/", getAlertsRoutes);
-app.use("/delete", deletePodRoute);
-app.use("/quarantine", quarantinePodRoute);
-
+app.use("/data/alerts", getAlertsRoutes);
+app.use("/pod/delete", deletePodRoute);
+app.use("/pod/quarantine", quarantinePodRoute);
+app.use("/data/incidents",getIncidentsRoute)
 
 mongoose.connect(mongoUri)
   .then(() => {
