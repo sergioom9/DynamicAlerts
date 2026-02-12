@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 import dotenv from "dotenv";
 import alertRoutes from "./routes/alert.ts";
 import getAlertsRoutes from "./routes/getAlerts.ts";
@@ -12,6 +13,7 @@ const app = express();
 const port = 3000;
 const mongoUri = Deno.env.get("MONGO_URI") || "";
 
+app.use(cors({origin: "*"}));
 app.use(express.json());
 app.use("/alert", alertRoutes);
 app.use("/data/alerts", getAlertsRoutes);
