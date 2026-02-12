@@ -11,7 +11,7 @@ const alertSchema = new mongoose.Schema({
   useruid : { type: String, required: false },
   priority: { type: String, required: true },
   rule: { type: String, required: true },
-  time: { type: String, required: true },
+  time: { type: Date, required: true },
   source: { type: String, required: false },
   tags: { type: [String], required: false }, 
 });

@@ -5,8 +5,6 @@ const incidentSchema = new mongoose.Schema({
  id: { type: String, required: true },
  pod: { type: String, required: true },
  namespace: { type: String, required: true },
- firstSeen: { type: String, required: true },
- lastSeen: { type: String, required: true },
  severity: { type: String, required: true },
  alertCount: { type: Number, required: true },
  status: { type: String, enum: ["open", "quarantined", "deleted"], required: true }
