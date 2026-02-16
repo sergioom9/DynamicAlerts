@@ -13,6 +13,10 @@ export type FalcoAlert = {
   tags: string[]
 }
 
+export type QuarantineType = {
+  pod: string,
+  namespace: string,
+}
 
 export type IncidentType = {
   id: string,

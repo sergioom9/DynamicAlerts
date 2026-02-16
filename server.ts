@@ -1,12 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors";
 import dotenv from "dotenv";
+import cors from "cors";
 import alertRoutes from "./routes/alert.ts";
 import getAlertsRoutes from "./routes/getAlerts.ts";
 import deletePodRoute from "./routes/deletePod.ts"
 import quarantinePodRoute from "./routes/quarantinePod.ts"
 import getIncidentsRoute from "./routes/getIncidents.ts"
+import getQuarantinedRoute from "./routes/getQuarantined.ts"
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,7 @@ app.use("/data/alerts", getAlertsRoutes);
 app.use("/pod/delete", deletePodRoute);
 app.use("/pod/quarantine", quarantinePodRoute);
 app.use("/data/incidents",getIncidentsRoute)
+app.use("/data/quarantined",getQuarantinedRoute)
 
 mongoose.connect(mongoUri)
   .then(() => {
