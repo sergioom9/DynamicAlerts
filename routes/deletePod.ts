@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { KubeConfig, CoreV1Api } from "@kubernetes/client-node";
+import { Quarantined } from "../DB/quarantined.ts";
 
 const router = express.Router();
 
@@ -23,7 +24,10 @@ router.post("/", async (req: Request, res: Response) => {
       name: pod,
       namespace: namespace,
     });
-
+    await Quarantined.deleteMany({
+      pod: "pod1",
+      namespace: "ns1"
+    });
     return res.json({
       status: "Pod deleted",
       pod,

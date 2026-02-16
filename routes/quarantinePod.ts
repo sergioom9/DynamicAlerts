@@ -1,5 +1,6 @@
 import { KubeConfig, CoreV1Api, NetworkingV1Api } from "@kubernetes/client-node";
 import express, { Request, Response } from "express";
+import { Quarantined } from "../DB/quarantined.ts";
 
 const router = express.Router();
 
@@ -69,6 +70,58 @@ router.post("/", async (req: Request, res: Response) => {
         throw err;
       }
     }
+    const addQuarantine = new Quarantined({pod:pod,namespace:namespace})
+    await addQuarantine.save()
+    if(!addQuarantine){return res.status(200).json({success: false,message:"Failed saving to DB"})}
+    return res.status(200).json({
+      success: true,
+      pod,
+      namespace,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.delete("/", async (req: Request, res: Response) => {
+  try {
+    const { namespace, pod } = req.body;
+
+    if (!namespace || !pod) {
+      return res.status(400).json({ error: "Missing params" });
+    }
+
+    const patch = [
+      {
+        op: "remove",
+        path: "/metadata/labels/quarantined"
+      },
+    ];
+
+    await k8sApi.patchNamespacedPod({
+      name: pod,
+      namespace,
+      body: patch,
+      contentType: "application/json-patch+json",
+    });
+
+    // Eliminar NetworkPolicy
+    try {
+      await networkingApi.deleteNamespacedNetworkPolicy({
+        name: `quarantine-${pod}`,
+        namespace,
+      });
+    } catch (err) {
+      if (err.code === 404) {
+      } else {
+        throw err;
+      }
+    }
+
+     await Quarantined.deleteMany({ 
+      pod: pod, 
+      namespace: namespace 
+    });
 
     return res.status(200).json({
       success: true,
@@ -76,6 +129,7 @@ router.post("/", async (req: Request, res: Response) => {
       namespace,
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
