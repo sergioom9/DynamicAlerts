@@ -29,15 +29,7 @@ router.post("/", async (req: Request, res: Response) => {
         ) {
             return res.status(400).json({ error: "Missing params" });
         }
-        if (
-            req.body.output.includes('cilium') ||                
-            req.body.output_fields["container.id"] === "host" ||                      
-            req.body.output_fields["container.name"].includes('kube-proxy') ||           
-            req.body.output_fields["container.name"].includes('pause') ||                 
-            req.body.output_fields["k8s_ns_name"] === "kube-system" ||                 
-            req.body.output_fields["k8s_ns_name"] === "kube-public" ||                     
-            req.body.output_fields["k8s_ns_name"] === "kube-node-lease"                      
-        ) {
+        if (req.body.output.includes('cilium')) {
             return res.status(400).json({ error: "Alerta no deseada" });
         }
         const alert = new Alert({
