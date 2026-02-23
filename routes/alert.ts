@@ -27,10 +27,10 @@ router.post("/", async (req: Request, res: Response) => {
             req.body.time == null ||
             req.body.output_fields["container.id"] == null 
         ) {
-            return res.status(400).json({ error: "Missing params" });
+            return res.status(200).json({ error: "Missing params" });
         }
         if (req.body.output.includes('cilium')) {
-            return res.status(400).json({ error: "Alerta no deseada" });
+            return res.status(200).json({ error: "Alerta no deseada" });
         }
         const alert = new Alert({
             output: req.body.output,
@@ -46,7 +46,7 @@ router.post("/", async (req: Request, res: Response) => {
         });
         await alert.save();
         if(!alert){
-            return res.status(409).json({ error: "Alert not saved" });
+            return res.status(200).json({ error: "Alert not saved" });
         }
         const incident = await checkForIncident(req.body.output_fields["k8s.pod.name"])
         if(incident){
@@ -64,7 +64,7 @@ router.post("/", async (req: Request, res: Response) => {
         return res.status(200).json({ success:true,alert,incident });
         } catch (err: Error | any) {
         console.log(err)
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(200).json({ error: "Internal Server Error" });
     }
 });
 
