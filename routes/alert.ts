@@ -20,6 +20,7 @@ const checkForIncident = async (podname: string) => {
 
 router.post("/", async (req: Request, res: Response) => {
     try {
+      console.log(req.body)
         if (
             req.body.output == null ||
             req.body.priority == null ||
@@ -31,6 +32,13 @@ router.post("/", async (req: Request, res: Response) => {
         }
         if (req.body.output.includes('cilium')) {
             return res.status(200).json({ error: "Alerta no deseada" });
+        }
+        if (
+            req.body.output_fields["k8s.pod.name"] == null ||
+            req.body.output_fields["k8s.ns.name"] == null ||
+            req.body.output_fields["container.name"] == null
+        ) {
+            return res.status(200).json({ error: "Alerta sin metadatos K8s, descartada" });
         }
         const alert = new Alert({
             output: req.body.output,
