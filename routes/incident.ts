@@ -47,7 +47,16 @@ router.post("/", async (req: Request, res: Response) => {
     });
 
     await incident.save();
-
+    const putQuarantine = await fetch("/pod/quarantine",{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              pod: pod,
+              namespace: namespace
+            })
+          }
     return res.status(201).json({
       success: true,
       incident,
